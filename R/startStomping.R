@@ -15,12 +15,14 @@
 
 
 
-startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum){
+startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale){
   #REQUIRE ALL THE THINGS
   require(pls)
   require(randomForest)
   require(e1071)
   require(FNN)
+  require(gbm)
+  require(robustbase)
 
   #Find any missing hobbitses
   if(missing(xMatrix)){stop("xMatrix is missing")}
@@ -35,10 +37,15 @@ startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed,
   if(missing(svm_gamma)){svm_gamma = c(seq(0, 0.06, 0.02), seq(0.1, 0.3, 0.1), 0.6)}
   if(missing(svm_epsilon)){svm_epsilon = c(seq(0,0.1,0.03), 0.2, seq(0.3,0.9,0.3))}
   if(missing(svm_cost)){svm_cost = c(seq(1, 20, 3), seq(30, 110, 20))}
+  if(missing(gbm_ntree)){gbm_ntree = 100}
+  if(missing(gbm_shrink)){gbm_shrink = 0.001}
+  if(missing(gbm_dist)){gbm_dist = "gaussian"}
+  if(missing(gbm_node)){gbm_node = 1}
+  if(missing(rlr_mscale)){rlr_mscale = 500}
 
   #Got to test for incorrect inputs, don't want to be sneaking any hobbitses into Mordor
   if(class(xMatrix) != "matrix"){stop("xMatrix is not a matrix class")}
-  if(class(yVector) != "numeric"){stop("yMatrix is not a numeric class")}
+  if(class(yVector) != "numeric"){stop("yVector is not a numeric class")}
   if(length(xMatrix[,1]) != length(yVector)){stop("xMatrix does not have the same number of rows as yVector")}
   if((length(meth)>1)&&(class(meth) != "integer")){stop("Methods vector is not integer")}
   if((length(meth)==1)&&(class(meth) != "numeric")){stop("Methods vector is not numeric")}
@@ -67,7 +74,7 @@ startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed,
   #Combine data for scaling
   dataC <- cbind(dataM, yVector)
 
-  #Scale Data
+  #Scale Data, so scaley, like a ssssssssnake
   if(transformV == "raw"){           dataS <- dataC;                }
   else if(transformV == "center"){   dataS <- centerScale(dataC);   }
   else if(transformV == "minmax"){   dataS <- minmaxScale(dataC);   }
@@ -87,6 +94,9 @@ startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed,
   ##-----BUILD MODELS
   #Begin Modelling I guess
 
+  RMSE_VEC <- c()
+  MAPE_VEC <- c()
+
   for(i in 1:iter){
     #set seed for splitting data - different reproducable seed for each iteration
     set.seed((seed+i-1))
@@ -95,27 +105,55 @@ startStomping  <- function(xMatrix, yVector, logV, transformV, meth, prop, seed,
     train_ <- DATA$train
     test_ <- DATA$test
 
-    #test models
-    olsr_error <- doOLSR(train_, test_)
-    slr_error  <- doSLR(train_, test_)
-    slrf_error <- doSLRf(train_, test_)
-    slrb_error <- doSLRb(train_, test_)
-    pcr_error  <- doPCR(train_, test_)
-    plsr_error <- doPLSR(train_, test_, plsr_ncomp)
-    rfr_error  <- doRFR(train_, test_, rfr_ntree)
-    svm_error  <- doSVM(train_, test_, svm_gamma, svm_epsilon, svm_cost)
-    knn_error  <- doKNN(train_, test_, knn_knum)
+    #Time to unleash the Meths
+    for(j in meth){
+      if(j == 1){
+        olsr_error <- doOLSR(train_, test_)
+        cat(paste("\nOLSR\n MAPE: ", olsr_error$mape,  "%\nRMSE: ", olsr_error$rmse, "\n~~~"))
+      }
+      else if(j==2){
+        slr_error  <- doSLR(train_, test_)
+        cat(paste("\nSLR\n MAPE: ",  slr_error$mape,   "%\nRMSE: ", slr_error$rmse,  "\n~~~"))
+      }
+      else if(j==3){
+        slrf_error <- doSLRf(train_, test_)
+        cat(paste("\nSLRf\n MAPE: ", slrf_error$mape,  "%\nRMSE: ", slrf_error$rmse, "\n~~~"))
+      }
+      else if(j==4){
+        slrb_error <- doSLRb(train_, test_)
+        cat(paste("\nSLRb\n MAPE: ", slrb_error$mape,  "%\nRMSE: ", slrb_error$rmse, "\n~~~"))
+      }
+      else if(j==5){
+        pcr_error  <- doPCR(train_, test_)
+        cat(paste("\nPCR\n MAPE: ",  pcr_error$mape,   "%\nRMSE: ", pcr_error$rmse,  "\n~~~"))
+      }
+      else if(j==6){
+        plsr_error <- doPLSR(train_, test_, plsr_ncomp)
+        cat(paste("\nPLSR\n MAPE: ", plsr_error$mape,  "%\nRMSE: ", plsr_error$rmse, "\n~~~"))
+      }
+      else if(j==7){
+        rfr_error  <- doRFR(train_, test_, rfr_ntree)
+        cat(paste("\nRFR\n MAPE: ",  rfr_error$mape,   "%\nRMSE: ", rfr_error$rmse,  "\n~~~"))
+      }
+      else if(j==8){
+        svm_error  <- doSVM(train_, test_, svm_gamma, svm_epsilon, svm_cost)
+        cat(paste("\nSVM\n MAPE: ",  svm_error$mape,   "%\nRMSE: ", svm_error$rmse,  "\n~~~"))
+      }
+      else if(j==9){
+        knn_error  <- doKNN(train_, test_, knn_knum)
+        cat(paste("\nKNN\n MAPE: ",  knn_error$mape,   "%\nRMSE: ", knn_error$rmse,  "\n~~~"))
+      }
+      else if(j==10){
+        gbm_error <- doGBM(train_, test_, gbm_ntree, gbm_shrink, gbm_dist, gbm_node)
+        cat(paste("\nGBM\n MAPE: ",  gbm_error$mape,   "%\nRMSE: ", gbm_error$rmse,  "\n~~~"))
+      }
+      else if(j==11){
+        rlr_error <- doRLR(train_,test_,rlr_mscale)
+        cat(paste("\nRLR\n MAPE: ",  rlr_error$mape,   "%\nRMSE: ", rlr_error$rmse,  "\n~~~"))
 
+      } else {stop("Method Vector has an incorrect input")}
+    }
 
-    cat(paste("\nOLSR\n MAPE: ", olsr_error$mape,  "%\nRMSE: ", olsr_error$rmse, "\n~~~"))
-    cat(paste("\nSLR\n MAPE: ",  slr_error$mape,   "%\nRMSE: ", slr_error$rmse,  "\n~~~"))
-    cat(paste("\nSLRf\n MAPE: ", slrf_error$mape,  "%\nRMSE: ", slrf_error$rmse, "\n~~~"))
-    cat(paste("\nSLRb\n MAPE: ", slrb_error$mape,  "%\nRMSE: ", slrb_error$rmse, "\n~~~"))
-    cat(paste("\nPCR\n MAPE: ",  pcr_error$mape,   "%\nRMSE: ", pcr_error$rmse,  "\n~~~"))
-    cat(paste("\nPLSR\n MAPE: ", plsr_error$mape,  "%\nRMSE: ", plsr_error$rmse, "\n~~~"))
-    cat(paste("\nRFR\n MAPE: ",  rfr_error$mape,   "%\nRMSE: ", rfr_error$rmse,  "\n~~~"))
-    cat(paste("\nSVM\n MAPE: ",  svm_error$mape,   "%\nRMSE: ", svm_error$rmse,  "\n~~~"))
-    cat(paste("\nKNN\n MAPE: ",  knn_error$mape,   "%\nRMSE: ", knn_error$rmse,  "\n~~~"))
 
 
   }

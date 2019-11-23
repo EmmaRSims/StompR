@@ -24,7 +24,7 @@ doKNN <- function(train,test,knum){
     }
   }
 
-  cat(paste("\n######\nKNN\nBest K: ",bestK,"\n######\n"))
+  cat(paste("\n~~~\nBest KNN Parameters:\nK = ",bestK,"\n"))
 
   return(list("rmse" = bestRmse, "mape" = bestMape))
 }
