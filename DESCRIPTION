@@ -1,0 +1,19 @@
+Package: StompR
+Type: Package
+Title: Statistical Model Comparison
+Version: 0.1.0
+Author: Emma Sims
+Maintainer: Emma Sims <emmasims_stem@outlook.com>
+Description: A package to compare the average performance of models on the same data, using their normalised root mean square error. The models compared are:
+    - Linear Regression
+    - Stepwise Regression (Forward)
+    - Stepwise Regression (Backwards)
+    - Stepwise Regression (Both)
+    - Partial Least Squares Regression
+    - Support Vector Machine Regression
+    - K-Nearest Neighbours Regression
+    - Principal Components Regression
+    - Random Forest Regression
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
