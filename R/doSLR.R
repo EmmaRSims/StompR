@@ -8,7 +8,7 @@ doSLR <- function(train,test){
   test.y <- test[,1]
 
   model <- lm(train.y ~. , data = train)
-  invisible(smodel <- step(model, direction = "both"))
+  invisible(smodel <- step(model, direction = "both", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
   return(getModelError(pred,test.y))
@@ -20,7 +20,7 @@ doSLRf <- function(train,test){
   test.y <- test[,1]
 
   model <- lm(train.y ~. , data = train)
-  invisible(smodel <- step(model, direction = "forward"))
+  invisible(smodel <- step(model, direction = "forward", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
   return(getModelError(pred,test.y))
@@ -32,7 +32,7 @@ doSLRb <- function(train,test){
   test.y <- test[,1]
 
   model <- lm(train.y ~. , data = train)
-  invisible(smodel <- step(model, direction = "backward"))
+  invisible(smodel <- step(model, direction = "backward", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
   return(getModelError(pred,test.y))
