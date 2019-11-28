@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #
 # Get the Mean Absolute Percentage Error (MAPE)
 # And Get the Root Mean Square Error (RMSE)

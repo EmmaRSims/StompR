@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #
 # RFR - Random Forest Regression
 #

@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #Min-Max Normalisation
 #
 #         (x - min)

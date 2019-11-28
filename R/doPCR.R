@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #
 # PCR - Principal Components Regression
 #

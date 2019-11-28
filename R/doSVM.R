@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #
 # SVM - Support Vector Machine
 #
@@ -29,7 +35,7 @@ doSVM <- function(train,test, gamma, epsilon, cost){
     }
   }
 
-  cat(paste("\n~~~\nBest SVM parameters:\nGamma = ",best_g,"\nEpsilon = ",best_e,"\nCost = ", best_c))
+  #cat(paste("\n~~~\nBest SVM parameters:\nGamma = ",best_g,"\nEpsilon = ",best_e,"\nCost = ", best_c))
 
   return(list("rmse" = bestRmse, "mape" = bestMape))
 }

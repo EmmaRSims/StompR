@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #
 # KNN - K-Nearest Neighbours
 #
@@ -24,7 +30,7 @@ doKNN <- function(train,test,knum){
     }
   }
 
-  cat(paste("\n~~~\nBest KNN Parameters:\nK = ",bestK,"\n"))
+  #cat(paste("\n~~~\nBest KNN Parameters:\nK = ",bestK,"\n"))
 
   return(list("rmse" = bestRmse, "mape" = bestMape))
 }

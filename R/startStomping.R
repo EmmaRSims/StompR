@@ -15,8 +15,9 @@
 
 
 
-startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, graph_output){
-  #REQUIRE ALL THE THINGS
+startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, permission){
+  ##-----PREAMBLE
+  #Room of Requirement
   require(pls)
   require(randomForest)
   require(e1071)
@@ -24,8 +25,11 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   require(gbm)
   require(robustbase)
 
+  #Graphics, you have chosen... poorly.
+  if(!is.null(dev.list())){dev.off()}
+
   #Find any missing hobbitses
-  if(missing(file_path)){stop("Please enter a file path to store the output of this function")}
+  if((missing(file_path)) || (!dir.exists(file_path))){stop("Please enter a valid file path to store the output of this function")}
   if(missing(xMatrix)){stop("xMatrix is missing")}
   if(missing(yVector)){stop("yVector is missing")}
   if(missing(transformV)){transformV="raw"}
@@ -44,7 +48,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if(missing(gbm_node)){gbm_node = 1}
   if(missing(rlr_mscale)){rlr_mscale = 500}
   if(missing(iter)){iter = 10}
-  if(missing(graph_output)){graph_output = "rmse"}
+  if(missing(permission)){permission == F}
 
   #Got to test for incorrect inputs, don't want to be sneaking any hobbitses into Mordor
   if(class(xMatrix) != "matrix"){stop("xMatrix is not a matrix class")}
@@ -56,23 +60,34 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if((rfr_ntree < 1) || ((class(rfr_ntree) != "numeric") && (class(rfr_ntree) != "integer"))){stop("rfr_ntree must be a positive integer")}
   if(missing(knn_knum)){knn_knum = 1:(ceiling(length(yVector)*0.5))}
 
+
+  ##--------------------------------------------------------------------------------------------------------------------------------------
   cat("\n---------------------")
   cat("\n  STARTING STOMPING")
   cat("\n---------------------\n")
 
-  cat("\n")
-  permission <- readline(prompt = "Does this package have permission to create and store data in the file path specified? [Y/N]: ")
-  if((tolower(permission) != "y") && (tolower(permission) != "yes")){stop("This package needs your explicit permission to alter files on this device.")}
+  #CONSENT MATTERS.
+  if(permission != T){
+    cat("\n")
+    cat(paste("output path: ",file_path,"\n"))
+    permission <- readline(prompt = "Does this package have permission to create and store data in the file path specified? [Y/N]: ")
+    if((tolower(permission) != "y") && (tolower(permission) != "yes")){stop("This package needs your explicit permission to alter files on this device.")}
+  }
+
+
+  ##-----CREATE DIRECTORIES TO STORE PLOTS/FILES
+  plot_path = paste0(file_path,"/plots"); dir.create(plot_path)
+
 
 
   ##-----EXTRACT METADATA
   if(is.null(names(yVector))){yName <- "yFactor"} else {yName <- names(yVector)}
   if(is.null(colnames(xMatrix))){xName <- c(1:length(xMatrix[1,]))} else {xName <- colnames(xMatrix)}
-  method_names = c("OLSR", "SLR-both", "SLR-forward", "SLR-backward", "PCR", "PLSR", "RFR", "SVM", "KNN", "GBM", "GLMR")
+  method_names = c("OLSR", "SLR-Both", "SLR-For", "SLR-Back", "PCR", "PLSR", "RFR", "SVM", "KNN", "GBM", "GLMR")
 
 
   ##-----TRANSFORM DATA
-  cat(paste("\nTransforming Data\n----------\nLog Transform: ",logV,"\nScaling Method: ",transformV, "\nIterations: ",iter,"\n\n"))
+  cat(paste("\nTransforming Data\n---------------------\nLog Transform: ",logV,"\nScaling Method: ",transformV, "\nIterations: ",iter,"\n"))
 
   #Log Transform Data
   if(logV==T){
@@ -105,6 +120,9 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   RMSE_MAT <- matrix(nrow = iter, ncol = length(meth))
   MAPE_MAT <- matrix(nrow = iter, ncol = length(meth))
 
+  cat("\nBuilding Models...\n [")
+  progress_ratio <- iter/10
+  progress_step <- progress_ratio
   for(i in 1:iter){
     #set seed for splitting data - different reproducable seed for each iteration
     set.seed((seed+i-1))
@@ -132,31 +150,69 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
       MAPE_MAT[i,j] = error$mape
     }
 
+    if(i >= progress_step){
+      cat("*")
+      progress_step <- progress_step + progress_ratio
+    }
 
   }
+  cat("]\n\n Processing Output Data\n---------------------\n")
 
   #Extract max values for plotting axis purposes
-  rmse_max = max(RMSE_MAT)
-  mape_max = max(MAPE_MAT)
   N <- ceiling(length(meth)/3)
+  mean_divisor <- replicate(length(meth),1:iter)
+
+  ##-----CALCULATE PERFORMANCE Y VALUES
+  #RMSE Cumulative Mean
+  rmse_cum <- RMSE_MAT[1,]
+  for(c in 2:iter){
+    rmse_cum <- rbind(rmse_cum, (rmse_cum[c-1] + RMSE_MAT[c,]))
+  }
+
+  rmse_cum_mean <- rmse_cum/mean_divisor
+
+  #MAPE Cumulative Mean
+  mape_cum <- MAPE_MAT[1,]
+  for(c in 2:iter){
+    mape_cum <- rbind(mape_cum, (mape_cum[c-1] + MAPE_MAT[c,]))
+  }
+  mape_cum_mean <- mape_cum/mean_divisor
 
 
-  if(graph_output == "rmse"){
-    par(mfrow = c(N,3))
-    for(n in 1:length(meth)){
-      plot(1:iter,RMSE_MAT[,n], type="l", ylim=c(0,(rmse_max*1.5)), xlab = "Iterations", ylab = "RMSE")
-      title(method_names[meth[n]])
-    }
-    title("RMSE", outer = T)
-  }
-  else if(graph_output == "mape"){
-    par(mfrow = c(N,3))
-    for(n in 1:length(meth)){
-      plot(1:iter,MAPE_MAT[,n], type="l", ylim=c(0,(mape_max*1.5)), xlab = "Iterations", ylab = "MAPE (%)")
-      title(method_names[meth[n]])
-    }
-    title("MAPE", outer = T)
-  }
+  #Calculate Maximum y axis Limit for plots
+  rmse_max = 1.3*max(RMSE_MAT)                    ; if(rmse_max == 0){rmse_max = max(RMSE_MAT)+0.1}
+  mape_max = 1.3*max(MAPE_MAT)                    ; if(mape_max == 0){mape_max = max(MAPE_MAT)+0.1}
+  rmse_cum_mean_max <- 1.3*max(rmse_cum_mean)     ; if(rmse_cum_mean_max == 0){rmse_cum_mean_max = max(rmse_cum_mean)+0.1}
+  mape_cum_mean_max <- 1.3*max(mape_cum_mean)     ; if(mape_cum_mean_max == 0){mape_cum_mean_max = max(mape_cum_mean)+0.1}
+
+
+  ##-----CREATE PLOTS
+
+  #RMSE
+  plotDataPNG(paste0(plot_path,"/RMSE_raw_performance.png"), RMSE_MAT, N, "RMSE", rmse_max, method_names[meth], "RMSE - Raw Performance")
+  plotDataPNG(paste0(plot_path,"/RMSE_Cumulative_mean.png"), rmse_cum_mean, N, expression(paste("RMSE Cumulative ", mu)), rmse_cum_mean_max, method_names[meth], "RMSE - Cumulative Mean")
+
+  #MAPE
+  plotDataPNG(paste0(plot_path,"/MAPE_raw_performance.png"), MAPE_MAT, N, "MAPE (%)", mape_max, method_names[meth], "MAPE - Raw Performance")
+  plotDataPNG(paste0(plot_path,"/MAPE_Cumulative_mean.png"), mape_cum_mean, N, expression(paste("MAPE Cumulative ", mu, " (%)")), mape_cum_mean_max, method_names[meth], "MAPE - Cumulative Mean")
+
+  #Comparison with final Cumulative Means
+  rmse_final <- rmse_cum_mean[iter,]
+  mape_final <- mape_cum_mean[iter,]
+
+  png(paste0(plot_path,"/Final_Comparison_rmse.png"))
+  plot(y=rmse_final,x=1:length(meth), xaxt='n', xlab="", ylab="Mean RMSE", title=expression(paste("Statistical Method Comparison\n",mu," RMSE")))
+  axis(1,at=1:length(meth),labels=method_names[meth],las=2)
+  dev.off()
+
+  png(paste0(plot_path,"/Final_Comparison_mape.png"))
+  plot(y=mape_final,x=1:length(meth), xaxt='n', xlab="", ylab="Mean MAPE (%)", title=expression(paste("Statistical Method Comparison\n",mu," MAPE (%)")))
+  axis(1,at=1:length(meth),labels=method_names[meth],las=2)
+  dev.off()
+
+  cat("---------------------\n")
+
+  return(list("RMSE_CM" = rmse_cum_mean, "MAPE_CM" = mape_cum_mean, "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT))
 
 }
 

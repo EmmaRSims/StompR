@@ -1,3 +1,9 @@
+###################################
+#     STOMPR                      #
+#     Emma Sims                   #
+#     Cranfield University 2019   #
+###################################
+
 #Mean-Centred Normalisation - Range Scaling
 #
 #         x - mean(x)
