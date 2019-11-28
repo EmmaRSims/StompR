@@ -90,18 +90,19 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
 
   rmse_data <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_rmse)
   hm_rmse_round <- round(heatmap_values_rmse,3)
+  lim_rmse <- 1.2*max(hm_rmse_round); if(1 > lim_rmse){lim_rmse <- 1}
   png(paste0(file_path, "/heatmap_rmse.png"))
-  p <- ggplot(rmse_data, aes(y=heatmap_methods, x=heatmap_matrix, fill=heatmap_values_rmse, label=hm_rmse_round)) + labs(x = "", y = "", fill="RMSE Values") + geom_tile() + scale_fill_gradient(low="green", high="red")  + theme(axis.text.x = element_text(angle=30, hjust = 1, vjust = 1))
+  p <- ggplot(rmse_data, aes(y=heatmap_methods, x=heatmap_matrix, fill=heatmap_values_rmse)) + geom_tile() + geom_text(aes(label=hm_rmse_round)) + scale_fill_gradient(low="green", high="red", limits = c(0,lim_rmse)) + labs(x = "", y = "", fill="RMSE Values") + theme(axis.text.x = element_text(angle=30, hjust = 1, vjust = 1))
   plot(p)
   dev.off()
 
   mape_data <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_mape)
   hm_mape_round <- round(heatmap_values_mape,3)
+  lim_mape <- 1.2*max(hm_mape_round);
+  if(100 > lim_mape){lim_mape <- 100}
   png(paste0(file_path, "/heatmap_mape.png"))
-  p <- ggplot(mape_data, aes(y=heatmap_methods, x=heatmap_matrix, fill=heatmap_values_mape, label=hm_mape_round)) + geom_tile() + scale_fill_gradient(low="white", high="red") + labs(x = "", y = "", fill="MAPE Values (%)") + theme(axis.text.x = element_text(angle=30, hjust = 1, vjust = 1))
+  p <- ggplot(mape_data, aes(y=heatmap_methods, x=heatmap_matrix, fill=heatmap_values_mape)) + geom_tile() + geom_text(aes(label=hm_mape_round)) + scale_fill_gradient(low="green", high="red", limits = c(0,lim_mape)) + labs(x = "", y = "", fill="MAPE Values (%)") + theme(axis.text.x = element_text(angle=30, hjust = 1, vjust = 1))
   plot(p)
   dev.off()
 
-
-  return(heatmap_values_rmse)
 }

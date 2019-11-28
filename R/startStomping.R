@@ -212,7 +212,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   cat("---------------------\n")
 
-  return(list("RMSE_CM" = rmse_cum_mean, "MAPE_CM" = mape_cum_mean, "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT))
+  return(list("RMSE_CM" = rmse_cum_mean[iter,], "MAPE_CM" = mape_cum_mean[iter,], "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT))
 
 }
 
