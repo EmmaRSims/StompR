@@ -4,6 +4,8 @@
 #     Cranfield University 2019   #
 ###################################
 
+#'
+
 # Hi there!
 # This is a package aimed at comparing statistical models to fit your data
 # If you're looking at this, you're probably going to judge my programming skills
@@ -12,7 +14,56 @@
 
 # Don't forget to add the argument descriptions pls
 
-
+#' @author Emma Sims
+#'
+#' @description 'startStomping' is a function which statistically compares a variety of models on the same datasets
+#' @details
+#' This function returns the error rates of each model vs the data supplied.
+#' There are two measurements of error, the root mean square error (RMSE), and the mean absolute error (MAPE).
+#' The models that this function compares are:
+#' * Ordinary Least Squares Regression (OLSR)
+#' * Stepwise Linear Regression - Both directions (SLR)
+#' * Stepwise Linear Regression - Forwards direction (SLRf)
+#' * Stepwise Linear Regression - Backwards direction (SLRb)
+#' * Principal Components Regression (PCR)
+#' * Partial Least Squares Regression (PLSR)
+#' * Random Forest Regression (RFR)
+#' * Support Vector Machine (SVM)
+#' * K-Nearest Neighbours Regression (KNN)
+#' * Generalised Boosted Modelling (GBM)
+#' * Robust Linear Regression (RLR)
+#'
+#' @param file_path string String to a folder where the output plots are stored.
+#' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
+#' @param yVector A vector for the response factor to be modelled
+#' @param logV
+#' @param transformV
+#' @param meth
+#' @param prop
+#' @param seed
+#' @param iter
+#' @param plsr_ncomp
+#' @param rfr_ntree
+#' @param svm_gamma
+#' @param svm_epsilon
+#' @param svm_cost
+#' @param knn_knum
+#' @param gbm_ntree
+#' @param gbm_shrink
+#' @param gbm_dist
+#' @param gbm_node
+#' @param rlr_mscale
+#' @param permission true,false Permission for this package to create files in the file path specified.
+#'
+#' @return A list of the raw RMSE and MAPE values, as well as the cumulative mean RMSE and MAPE values:
+#' \itemize{
+#' \item RMSE_CM - The cumulative mean values for the RMSE, the final value is the converged mean of the RMSE of the model
+#' \item MAPE_CM - The cumulative mean values for the MAPE, the final value is the converged mean of the MAPE of the model
+#' \item rmse_raw - The raw RMSE value of each model for each iteration
+#' \item mape_raw - The raw MAPE value of each model for each iteration
+#' }
+#'
+#' @param
 
 
 startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, permission){
@@ -95,7 +146,8 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   } else {dataM <- xMatrix}
 
   #Combine data for scaling
-  dataC <- cbind(dataM, yVector)
+  dataC <- dataM#cbind(dataM, yVector)
+  #dataC <- cbind(dataM, yVector)
 
   #Scale Data, so scaley, like a ssssssssnake
   if(transformV == "raw"){           dataS <- dataC;                }

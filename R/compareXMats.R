@@ -98,11 +98,14 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
 
   mape_data <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_mape)
   hm_mape_round <- round(heatmap_values_mape,3)
-  lim_mape <- 1.2*max(hm_mape_round);
-  if(100 > lim_mape){lim_mape <- 100}
+  lim_mape <- 1.2*max(hm_mape_round); if(100 > lim_mape){lim_mape <- 100}
   png(paste0(file_path, "/heatmap_mape.png"))
   p <- ggplot(mape_data, aes(y=heatmap_methods, x=heatmap_matrix, fill=heatmap_values_mape)) + geom_tile() + geom_text(aes(label=hm_mape_round)) + scale_fill_gradient(low="green", high="red", limits = c(0,lim_mape)) + labs(x = "", y = "", fill="MAPE Values (%)") + theme(axis.text.x = element_text(angle=30, hjust = 1, vjust = 1))
   plot(p)
   dev.off()
+
+  output <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_mape, heatmap_values_rmse)
+
+  return(output)
 
 }
