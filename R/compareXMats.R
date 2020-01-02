@@ -6,6 +6,13 @@
 
 # This is an extra function for those who want to compare different datasets with the same response variable
 
+
+#' startStompingMultiple This function compares different statistical methods as well as different xMatrices vs the same yVector response factor.
+#' @details
+#' A time-saving method of analysing different xMatices datasets against the same yVector response factor.
+#' It also analyses
+#'
+#'@export
 startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, permission = F){
   #Graphics, you have chosen... poorly.
   if(!is.null(dev.list())){dev.off()}
