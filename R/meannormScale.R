@@ -11,6 +11,12 @@
 #       max(x) - min(x)
 #
 #
+
+#' meannormScale uses the Mean Normalisation method to scale a matrix of data
+#' @details This function uses the equation x' = (x - mean(x))/(max(x) - min(x)) to scale the matrix.
+#' @param xMatrix matrix of data to be scaled
+#' @return returns the variable scalex, which is the scaled matrix
+#' @export
 meannormScale <- function(xMatrix){
   meanx <- mean(xMatrix)
   minx <- min(xMatrix)

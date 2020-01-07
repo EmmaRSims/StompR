@@ -11,7 +11,11 @@
 #          sd(x)           sd(x)
 #
 
-#MATRIX
+#' vastScale uses the Variable Stability Scaling Transformation (VAST) to normalise the input matrix
+#' @details This function uses the equation x' = ((x - mean(x)) / sd(x)) . (mean(x)/sd(x)) to normalise the input matrix.
+#' @param xMatrix matrix of data to be scaled
+#' @return returns the variable scalex, which is the scaled matrix
+#' @export
 vastScale <- function(xMatrix){
   dimx <- dim(xMatrix)
   meanx <- matrix(rep(mean(xMatrix), (dimx[1]*dimx[2])), nrow = dimx[1], ncol = dimx[2])

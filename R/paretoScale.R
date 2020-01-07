@@ -11,7 +11,11 @@
 #         sqrt(sd(x))
 #
 
-#MATRIX
+#' paretoScale uses the Pareto Normalisation method to scale the input matrix
+#' @details This function uses the equation x' = (x - mean(x))/sqrt(sd(x)) to scale the input matrix.
+#' @param xMatrix matrix of data to be scaled
+#' @return returns the variable scalex, which is the scaled matrix
+#' @export
 paretoScale <- function(xMatrix){
   dimx <- dim(xMatrix)
   sdx <- sd(xMatrix)

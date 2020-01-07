@@ -11,6 +11,11 @@
 #        (max - min)
 #
 
+#' minmaxScal uses the Min-Max Normalisation method to scale the input matrix
+#' @details This function uses the equation x' = (x - min(x))/(max(x) - min(x)) to scale the matrix.
+#' @param xMatrix matrix of data to be scaled
+#' @return returns the variable scalex, which is the scaled matrix
+#' @export
 minmaxScale <- function(xMatrix){
   minx <- min(xMatrix)
   maxx <- max(xMatrix)

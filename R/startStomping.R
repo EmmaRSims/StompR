@@ -15,17 +15,19 @@
 #' This function returns the error rates of each model vs the data supplied.
 #' There are two measurements of error, the root mean square error (RMSE), and the mean absolute error (MAPE).
 #' The models that this function compares are:
-#' * Ordinary Least Squares Regression (OLSR)
-#' * Stepwise Linear Regression - Both directions (SLR)
-#' * Stepwise Linear Regression - Forwards direction (SLRf)
-#' * Stepwise Linear Regression - Backwards direction (SLRb)
-#' * Principal Components Regression (PCR)
-#' * Partial Least Squares Regression (PLSR)
-#' * Random Forest Regression (RFR)
-#' * Support Vector Machine (SVM)
-#' * K-Nearest Neighbours Regression (KNN)
-#' * Generalised Boosted Modelling (GBM)
-#' * Robust Linear Regression (RLR)
+#' \itemize{
+#' \item Ordinary Least Squares Regression (OLSR)
+#' \item Stepwise Linear Regression - Both directions (SLR)
+#' \item Stepwise Linear Regression - Forwards direction (SLRf)
+#' \item Stepwise Linear Regression - Backwards direction (SLRb)
+#' \item Principal Components Regression (PCR)
+#' \item Partial Least Squares Regression (PLSR)
+#' \item Random Forest Regression (RFR)
+#' \item Support Vector Machine (SVM)
+#' \item K-Nearest Neighbours Regression (KNN)
+#' \item Generalised Boosted Modelling (GBM)
+#' \item Robust Linear Regression (RLR)
+#' }
 #'
 #' @param file_path string String to a folder where the output plots are stored.
 #' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
@@ -44,12 +46,12 @@
 #' @param knn_knum The number of K-Centroids used in the K-Nearest Neighbours method
 #' @param gbm_ntree The number of trees used in the Generalised Boosted regression method
 #' @param gbm_shrink The shrink used in the Generalised Boosted regression method
-#' @param gbm_dist The distance used in the Generalised Boosted regression method
+#' @param gbm_dist The distribution used in the Generalised Boosted regression method
 #' @param gbm_node The number of nodes used in the Generalised Boosted regression method
 #' @param rlr_mscale The mscale used for the Robust Linear regression method
 #' @param permission true,false Permission for this package to create files in the file path specified.
 #'
-#' @return A list of the raw RMSE and MAPE values, as well as the cumulative mean RMSE and MAPE values:
+#' @return The performance plots are in the file path specified. Also returned is a list of the following:
 #' \itemize{
 #' \item RMSE_CM - The cumulative mean values for the RMSE, the final value is the converged mean of the RMSE of the model
 #' \item MAPE_CM - The cumulative mean values for the MAPE, the final value is the converged mean of the MAPE of the model
