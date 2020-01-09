@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 
 #
@@ -53,5 +54,5 @@ doKNN <- function(train,test,knum){
 
   #cat(paste("\n~~~\nBest KNN Parameters:\nK = ",bestK,"\n"))
 
-  return(list("rmse" = bestRmse, "mape" = bestMape, "bestK" - bestK))
+  return(list("rmse" = bestRmse, "mape" = bestMape, "bestK" = bestK))
 }

@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 
 #
@@ -19,12 +20,16 @@
 #' \item mape - the Mean Absolute Percentage Error (MAPE) of the current model
 #' \item rmse - the Root Mean Square Error (RMSE) of the current model
 #' }
+#' If they are infinite values, this function changes them to 999 to avoid Inf errors
 #' @export
 getModelError <- function(Predicted, Actual){
   diff_ <- abs(Predicted - Actual)
 
   MAPE <- 100*(mean((diff_/abs(Actual))))
   RMSE <- sqrt(mean((diff_)^2))
+
+  if(is.infinite(MAPE)){MAPE = 999}
+  if(is.infinite(RMSE)){RMSE = 999}
 
   return(list("mape" = MAPE, "rmse" = RMSE))
 }

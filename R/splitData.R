@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 
 #' splitData Splits the Data Sets into Training and Testing data

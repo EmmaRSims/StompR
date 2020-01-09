@@ -16,7 +16,7 @@ Description: A package to compare the average performance of models on the same 
     - Random Forest Regression
     - Generalised Boosted Regression
     - Robust Linear Regression
-Depends: R (>= 3.6.1), pls (>= 2.7-2), randomForest (>= 4.6-14), e1071 (>= 1.7-3), FNN (>= 1.1.3), gbm (>= 2.1.5), robustbase (>= 0.93-5),stats (>= 3.6.0)
+Depends: R (>= 3.6.1), pls (>= 2.7-2), randomForest (>= 4.6-14), e1071 (>= 1.7-3), FNN (>= 1.1.3), gbm (>= 2.1.5), robustbase (>= 0.93-5)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

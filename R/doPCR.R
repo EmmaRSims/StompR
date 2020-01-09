@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 
 #
@@ -13,7 +14,7 @@
 #' @details This function uses the PCR method to build a model from the training data, with the function \code{\link[pls]{pcr}},
 #' then calculates the RMSE and MAPE with \code{\link[StompR]{getModelError}} using the predicted values calculated from the testing data.
 #'
-#' @import pls
+#' @importFrom pls pcr
 #'
 #' @param train Dataframe of training data, the first column is the response factor to be modelled by the remaining columns
 #' @param test Dataframe of testing data, the first column is the response factor, the rest of the columns contain factors used to predict the response column with the built model
@@ -30,7 +31,7 @@ doPCR <- function(train,test){
   test.x <- test[,-1]
   test.y <- test[,1]
 
-  invisible(model <- pcr(train.y ~. , data = train, scale=F))
+  invisible(model <- pls::pcr(train.y ~. , data = train, scale=F))
   suppressWarnings(pred <- predict(model, test.x))
 
   return(getModelError(pred,test.y))

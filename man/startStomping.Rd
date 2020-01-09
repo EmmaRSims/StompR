@@ -25,7 +25,7 @@ startStomping(
   gbm_dist,
   gbm_node,
   rlr_mscale,
-  permission
+  permission = F
 )
 }
 \arguments{

@@ -1,8 +1,10 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
+
 
 # This is an extra function for those who want to compare different datasets with the same response variable
 
@@ -109,7 +111,7 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
 
   method_names = c("OLSR", "SLR-Both", "SLR-For", "SLR-Back", "PCR", "PLSR", "RFR", "SVM", "KNN", "GBM", "GLMR")
   dataset_names <- names(xMatrices)
-  if(is.null(dataset_names)){dataset_names = c(1:length(d))}
+  if(is.null(dataset_names)){dataset_names = c(1:length(xMatrices))}
 
   #Empty Heatmap Values
   heatmap_methods     <- c()

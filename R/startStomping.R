@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 # Hi there!
 # This is a package aimed at comparing statistical models to fit your data
@@ -29,13 +30,12 @@
 #' \item Robust Linear Regression (RLR)
 #' }
 #'
-#' @import pls
+#' @importFrom pls plsr pcr
 #' @import randomForest
 #' @import e1071
 #' @import FNN
 #' @import gbm
 #' @import robustbase
-#' @import stats
 #'
 #' @param file_path string String to a folder where the output plots are stored
 #' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
@@ -68,7 +68,7 @@
 #' }
 #'
 #'@export
-startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, permission){
+startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, prop, seed, iter, plsr_ncomp, rfr_ntree, svm_gamma, svm_epsilon, svm_cost, knn_knum, gbm_ntree, gbm_shrink, gbm_dist, gbm_node, rlr_mscale, permission=F){
   ##-----PREAMBLE
   #Room of Requirement
   require(pls)
@@ -223,7 +223,6 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   for(c in 2:iter){
     rmse_cum <- rbind(rmse_cum, (rmse_cum[c-1] + RMSE_MAT[c,]))
   }
-
   rmse_cum_mean <- rmse_cum/mean_divisor
 
   #MAPE Cumulative Mean
@@ -235,10 +234,10 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
 
   #Calculate Maximum y axis Limit for plots
-  rmse_max = 1.3*max(RMSE_MAT)                    ; if(rmse_max == 0){rmse_max = max(RMSE_MAT)+0.1}
-  mape_max = 1.3*max(MAPE_MAT)                    ; if(mape_max == 0){mape_max = max(MAPE_MAT)+0.1}
-  rmse_cum_mean_max <- 1.3*max(rmse_cum_mean)     ; if(rmse_cum_mean_max == 0){rmse_cum_mean_max = max(rmse_cum_mean)+0.1}
-  mape_cum_mean_max <- 1.3*max(mape_cum_mean)     ; if(mape_cum_mean_max == 0){mape_cum_mean_max = max(mape_cum_mean)+0.1}
+  rmse_max = 1.3*max(RMSE_MAT)                    ; if(rmse_max == 0){rmse_max = max(RMSE_MAT)+0.1}                         ; if(is.infinite(rmse_max)){rmse_max = 999; RMSE_MAT[is.infinite(RMSE_MAT)]<- 999}
+  mape_max = 1.3*max(MAPE_MAT)                    ; if(mape_max == 0){mape_max = max(MAPE_MAT)+0.1}                         ; if(is.infinite(mape_max)){mape_max = 999; MAPE_MAT[is.infinite(MAPE_MAT)]<- 999}
+  rmse_cum_mean_max <- 1.3*max(rmse_cum_mean)     ; if(rmse_cum_mean_max == 0){rmse_cum_mean_max = max(rmse_cum_mean)+0.1}  ; if(is.infinite(rmse_cum_mean_max)){rmse_cum_mean_max = 999; rmse_cum_mean[is.infinite(rmse_cum_mean)]<- 999}
+  mape_cum_mean_max <- 1.3*max(mape_cum_mean)     ; if(mape_cum_mean_max == 0){mape_cum_mean_max = max(mape_cum_mean)+0.1}  ; if(is.infinite(mape_cum_mean_max)){mape_cum_mean_max = 999; mape_cum_mean[is.infinite(mape_cum_mean)]<- 999}
 
 
   ##-----CREATE PLOTS

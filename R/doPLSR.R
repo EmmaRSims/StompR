@@ -1,7 +1,8 @@
 ###################################
 #     STOMPR                      #
 #     Emma Sims                   #
-#     Cranfield University 2019   #
+#     Cranfield University        #
+#     2019/2020                   #
 ###################################
 
 #
@@ -13,7 +14,7 @@
 #' @details This function uses the PLSR method to build a model from the training data, with the function \code{\link[pls]{plsr}},
 #' then calculates the RMSE and MAPE with \code{\link[StompR]{getModelError}} using the predicted values calculated from the testing data.
 #'
-#' @import pls
+#' @importFrom pls plsr
 #'
 #' @param train Dataframe of training data, the first column is the response factor to be modelled by the remaining columns
 #' @param test Dataframe of testing data, the first column is the response factor, the rest of the columns contain factors used to predict the response column with the built model
@@ -31,7 +32,7 @@ doPLSR <- function(train,test,ncomp){
   test.x <- test[,-1]
   test.y <- test[,1]
 
-  invisible(model <- plsr(train.y ~. , data = train))
+  invisible(model <- pls::plsr(train.y ~. , data = train))
   suppressWarnings(pred <- as.numeric(predict(model, test.x, ncomp=ncomp)))
 
   return(getModelError(pred,test.y))
