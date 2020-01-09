@@ -29,7 +29,7 @@ startStomping(
 )
 }
 \arguments{
-\item{file_path}{string String to a folder where the output plots are stored.}
+\item{file_path}{string String to a folder where the output plots are stored}
 
 \item{xMatrix}{A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.}
 
@@ -41,9 +41,9 @@ startStomping(
 
 \item{meth}{Numerical vector of statistical methods to be compared, all of them are used by default if left blank. c(1:11) are indices of methods: "OLSR", "SLR-both", "SLR-forward", "SLR-backward", "PCR", "PLSR", "RFR", "SVM", "KNN", "GBM", "GLMR"}
 
-\item{prop}{Proportion of data to be used in the training of the model. Value between 0 and 1. For example, 0.7 is 70\% of the data used for training the model.}
+\item{prop}{Proportion of data to be used in the training of the model. Value between 0 and 1. For example, 0.7 is 70\% of the data used for training the model}
 
-\item{seed}{Initial seed for splitting training and testing datasets. Used for reproducability of results.}
+\item{seed}{Initial seed for splitting training and testing datasets; used for reproducability of results}
 
 \item{iter}{How many models are built to assess the overall accuracy of the method}
 
@@ -67,9 +67,9 @@ startStomping(
 
 \item{gbm_node}{The number of nodes used in the Generalised Boosted regression method}
 
-\item{rlr_mscale}{The mscale used for the Robust Linear regression method}
+\item{rlr_mscale}{Integer specifying the maximum number of iterations for the IRWLS algorithm within the Robust Linear regression method; default is 50}
 
-\item{permission}{true,false Permission for this package to create files in the file path specified.}
+\item{permission}{true,false Permission for this package to create files in the file path specified}
 }
 \value{
 The performance plots are in the file path specified. Also returned is a list of the following:

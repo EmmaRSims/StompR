@@ -29,14 +29,22 @@
 #' \item Robust Linear Regression (RLR)
 #' }
 #'
-#' @param file_path string String to a folder where the output plots are stored.
+#' @import pls
+#' @import randomForest
+#' @import e1071
+#' @import FNN
+#' @import gbm
+#' @import robustbase
+#' @import stats
+#'
+#' @param file_path string String to a folder where the output plots are stored
 #' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
 #' @param yVector A vector containing the response factor to be modelled
 #' @param logV Boolean value, if TRUE then transform the xMatrix using log to base 10
 #' @param transformV Transformation and scaling method to be applied to xMatrix, raw data is used by default, the options are: raw, center, minmax, meannorm, zscore, pareto, vast, level
 #' @param meth Numerical vector of statistical methods to be compared, all of them are used by default if left blank. c(1:11) are indices of methods: "OLSR", "SLR-both", "SLR-forward", "SLR-backward", "PCR", "PLSR", "RFR", "SVM", "KNN", "GBM", "GLMR"
-#' @param prop Proportion of data to be used in the training of the model. Value between 0 and 1. For example, 0.7 is 70\% of the data used for training the model.
-#' @param seed Initial seed for splitting training and testing datasets. Used for reproducability of results.
+#' @param prop Proportion of data to be used in the training of the model. Value between 0 and 1. For example, 0.7 is 70\% of the data used for training the model
+#' @param seed Initial seed for splitting training and testing datasets; used for reproducability of results
 #' @param iter How many models are built to assess the overall accuracy of the method
 #' @param plsr_ncomp The number of components used for the principal components regression method
 #' @param rfr_ntree The number of trees used in the Random Forest Regression method
@@ -48,8 +56,8 @@
 #' @param gbm_shrink The shrink used in the Generalised Boosted regression method
 #' @param gbm_dist The distribution used in the Generalised Boosted regression method
 #' @param gbm_node The number of nodes used in the Generalised Boosted regression method
-#' @param rlr_mscale The mscale used for the Robust Linear regression method
-#' @param permission true,false Permission for this package to create files in the file path specified.
+#' @param rlr_mscale Integer specifying the maximum number of iterations for the IRWLS algorithm within the Robust Linear regression method; default is 50
+#' @param permission true,false Permission for this package to create files in the file path specified
 #'
 #' @return The performance plots are in the file path specified. Also returned is a list of the following:
 #' \itemize{
