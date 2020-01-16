@@ -8,9 +8,10 @@ Statistical Comparison Package in R (StompR) is a tool for analysing the perform
   - [Devtools](#installing-from-devtools)
   - [GitHub](#installing-from-repository)
 - [How to Use](#how-to-use)
-  - [Data Preparation](#data-preparation)
   - [File Permissions](#file-permissions)
-  - [Input Data](#input-data)
+  - [Functions](#functions)
+    - []
+    - [Data Preparation](#data-preparation-single-matrix)
   - [Data Transformations](#data-transformations)
   - [Statistical Methods](#statistical-methods)
   - [Error Analysis](#error-analysis)
@@ -48,12 +49,22 @@ library(utils)
 install.packages("./StompR/", repos = NULL, type = "source")
 ````
 
-
 ## How to Use 
-### Data Preparation
-
 ### File Permissions
 This package will require the ability to create and store files with the purpose of creating plots. For full transparency, the package will request explicit consent to create these files before any data is processed.
 this can be bypassed/automated by setting the parameter `permission` to `TRUE`.
+### Functions
+There are currently two main functions, `startStomping()` and `startStompingMultiple()`. The purpose of `startStomping()` is to compare  
+#### Data Preparation single matrix
+There are only 3 required inputs, these are:
+ - The file path to the folder in which the results will be stored
+ - A matrix of dependent variables, where each column is a separate factor (must be a matrix class)
+ - A vector for the independent variable which is being modelled (must be a numeric class)
+The length of the vector and number of matrix rows must match. This package focuses on regression, so the data should be continuous rather than discrete (categorical).
 
+#### Data Preparation (multiple matrices)
+Similarly to the single matrix, there are only 3 required inputs; these are:
+ - The file path to the folder in which the results will be stored
+ - A list of matrices of dependent variables, where each column in the matrix is a separate factor (must be a list class of matrix classes)
+ - A vector for the independent variable which is being modelled (must be a numeric class)
 ### Parameters
