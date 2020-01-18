@@ -36,5 +36,7 @@ doRFR <- function(train,test,ntree){
   suppressWarnings(pred.all <- predict(model, test.x, predict.all=T)$individual)
   pred <- apply(pred.all, 1, mean)
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

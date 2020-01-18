@@ -34,5 +34,7 @@ doPCR <- function(train,test){
   invisible(model <- pls::pcr(train.y ~. , data = train, scale=F))
   suppressWarnings(pred <- predict(model, test.x))
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

@@ -174,6 +174,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   RMSE_MAT <- matrix(nrow = iter, ncol = length(meth))
   MAPE_MAT <- matrix(nrow = iter, ncol = length(meth))
+  MODEL_DAT <- data.frame()
 
   cat("\nBuilding Models...\n [")
   progress_ratio <- iter/10
@@ -203,6 +204,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
       RMSE_MAT[i,j] = error$rmse
       MAPE_MAT[i,j] = error$mape
+      MODEL_DAT[i,j] = error$model
     }
 
     if(i >= progress_step){
@@ -266,7 +268,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   cat("---------------------\n")
 
-  return(list("RMSE_CM" = rmse_cum_mean[iter,], "MAPE_CM" = mape_cum_mean[iter,], "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT))
+  return(list("RMSE_CM" = rmse_cum_mean[iter,], "MAPE_CM" = mape_cum_mean[iter,], "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT), "models" = MODEL_DAT)
 
 }
 

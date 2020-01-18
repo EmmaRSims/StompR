@@ -43,6 +43,7 @@ doSVM <- function(train,test, gamma, epsilon, cost){
   best_c  <-1000000000000
   best_g  <-1000000000000
   best_e  <-1000000000000
+  bestModel <- NULL
   for (c in cost){
     for (e in epsilon){
       for (g in gamma){
@@ -56,6 +57,7 @@ doSVM <- function(train,test, gamma, epsilon, cost){
           best_c   <- c
           best_g   <- g
           best_e   <- e
+          bestModel <- model
           }
       }
     }
@@ -63,5 +65,5 @@ doSVM <- function(train,test, gamma, epsilon, cost){
 
   #cat(paste("\n~~~\nBest SVM parameters:\nGamma = ",best_g,"\nEpsilon = ",best_e,"\nCost = ", best_c))
 
-  return(list("rmse" = bestRmse, "mape" = bestMape, "gamma" = best_c, "epsilon" = best_e, "cost" = best_c))
+  return(list("rmse" = bestRmse, "mape" = bestMape, "gamma" = best_c, "epsilon" = best_e, "cost" = best_c, "model" = bestModel))
 }

@@ -52,6 +52,7 @@ doGBM <- function(train,test,ntree,shrink,dist,nnode){
 
   invisible(model <- gbm(train.y ~. , data = train, n.trees = ntree, shrinkage = shrink, distribution = dist, n.minobsinnode = nnode))
   pred <- predict(model, test.x, ntree)
+  res <- getModelError(pred,test.y)
 
-  return(getModelError(pred,test.y))
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

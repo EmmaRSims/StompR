@@ -35,5 +35,7 @@ doPLSR <- function(train,test,ncomp){
   invisible(model <- pls::plsr(train.y ~. , data = train))
   suppressWarnings(pred <- as.numeric(predict(model, test.x, ncomp=ncomp)))
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

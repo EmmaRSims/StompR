@@ -40,19 +40,22 @@ doKNN <- function(train,test,knum){
   bestK   <-1000000000000
   bestRmse<-1000000000000
   bestMape<-1000000000000
+  bestModel <- NULL
 
   for(k in knum){
-    pred<-knn.reg(train.x, test=test.x, y=train.y, k=k)$pred
+    model <- knn.reg(train.x, test=test.x, y=train.y, k=k)
+    pred <- model$pred
     model_error <- getModelError(pred,test.y)
 
     if(bestRmse > model_error$rmse){
       bestRmse <- model_error$rmse
       bestMape <- model_error$mape
       bestK    <- k
+      bestModel <- model
     }
   }
 
   #cat(paste("\n~~~\nBest KNN Parameters:\nK = ",bestK,"\n"))
 
-  return(list("rmse" = bestRmse, "mape" = bestMape, "bestK" = bestK))
+  return(list("rmse" = bestRmse, "mape" = bestMape, "bestK" = bestK, "model" = bestModel))
 }

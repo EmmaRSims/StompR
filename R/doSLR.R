@@ -36,7 +36,9 @@ doSLR <- function(train,test){#Both
   invisible(smodel <- step(model, direction = "both", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }
 
 #' doSLRf performs a Stepwise Linear Regression (SLR) model in the forward direction on the training data,
@@ -63,7 +65,9 @@ doSLRf <- function(train,test){#Forward
   invisible(smodel <- step(model, direction = "forward", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }
 
 #' doSLRb performs a Stepwise Linear Regression (SLR) model in the backwards direction on the training data,
@@ -90,5 +94,7 @@ doSLRb <- function(train,test){#Backward
   invisible(smodel <- step(model, direction = "backward", trace = F))
   suppressWarnings(pred <- predict(smodel, test.x))
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

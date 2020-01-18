@@ -34,5 +34,7 @@ doOLSR <- function(train,test){
   invisible(model <- lm(train.y ~. , data = train))
   pred <- predict(model, test.x)
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }
