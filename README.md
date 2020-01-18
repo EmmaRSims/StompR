@@ -1,21 +1,37 @@
-# StompR
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# Introduction
 Statistical Comparison Package in R (StompR) is a tool for analysing the performance of various statistical methods against either a single dataset, or multiple datasets with the same response factor.
 
 ## Table of Contents
+- [Introduction](#introduction)
 - [StompR](#stompr)
+- [Workflow](#workflow)
 - [Installation](#installation)
   - [Dependencies](#dependencies)
   - [Devtools](#installing-from-devtools)
   - [GitHub](#installing-from-repository)
 - [How to Use](#how-to-use)
   - [File Permissions](#file-permissions)
-  - [Functions](#functions)
-    - []
-    - [Data Preparation](#data-preparation-single-matrix)
+  - [Data Preparation](#data-preparation)
+    - [Single Dataset](#data-preparation-single-matrix)
+    - [Multiple Datasets](#data-preparation-multiple-matrices)
+  - [Log Transform](#log-transform)
   - [Data Transformations](#data-transformations)
   - [Statistical Methods](#statistical-methods)
-  - [Error Analysis](#error-analysis)
-  - [Output](#output)
+  - [General Parameters](#general-parameters)
+- [Output](#output)
+  - [Plots](#plots)
+  - [Heatmap](#heatmap)
+  - [Models](#models)
+  
+##StompR
+  
+## Workflow
+
 
 ## Installation
 
