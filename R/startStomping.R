@@ -165,8 +165,8 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   #Seperate Data Again
   dimMat <- dim(dataS)
-  dMat <- dataS[,1:(dimMat[2]-1)]
-  dVec <- dataS[,dimMat[2]]
+  dMat <- as.matrix(dataS)
+  dVec <- yVector
 
 
   ##-----BUILD MODELS
@@ -174,7 +174,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   RMSE_MAT <- matrix(nrow = iter, ncol = length(meth))
   MAPE_MAT <- matrix(nrow = iter, ncol = length(meth))
-  MODEL_DAT <- data.frame()
+  MODEL_DAT <- vector(mode = "list", length = (iter*length(meth)))
 
   cat("\nBuilding Models...\n [")
   progress_ratio <- iter/10
@@ -186,6 +186,8 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
     train_ <- DATA$train
     test_ <- DATA$test
+
+
 
     #Time to unleash the Meths
     for(j in 1:length(meth)){
@@ -202,9 +204,10 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
       else if(meth[j]==11){ error <- doRLR(train_,test_,rlr_mscale)}
       else {stop("Method Vector has an incorrect input")}
 
+
       RMSE_MAT[i,j] = error$rmse
       MAPE_MAT[i,j] = error$mape
-      MODEL_DAT[i,j] = error$model
+      MODEL_DAT[[((i*length(meth))-1)+j]] = error$model
     }
 
     if(i >= progress_step){
@@ -268,7 +271,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   cat("---------------------\n")
 
-  return(list("RMSE_CM" = rmse_cum_mean[iter,], "MAPE_CM" = mape_cum_mean[iter,], "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT), "models" = MODEL_DAT)
+  return(list("RMSE_CM" = rmse_cum_mean[iter,], "MAPE_CM" = mape_cum_mean[iter,], "rmse_raw" = RMSE_MAT, "mape_raw" = MAPE_MAT, "models" = MODEL_DAT))
 
 }
 

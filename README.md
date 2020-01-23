@@ -31,6 +31,7 @@ Statistical Comparison Package in R (StompR) is a tool for analysing the perform
 ##StompR
   
 ## Workflow
+![Workflow](./images/Workflow.png?raw=true)
 
 
 ## Installation
