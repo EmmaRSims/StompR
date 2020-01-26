@@ -35,5 +35,7 @@ doRLR <- function(train,test,mscale){
   invisible(model <- lmrob(train.y ~. , data = train, maxit.scale = mscale, na.action = na.roughfix))
   pred <- predict(model, test.x)
 
-  return(getModelError(pred,test.y))
+  res <- getModelError(pred,test.y)
+
+  return(list("mape" = res$mape, "rmse" = res$rmse, 'model' = model))
 }

@@ -119,6 +119,8 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
   heatmap_values_rmse <- c()
   heatmap_values_mape <- c()
 
+  models <- vector(mode = "list", length = length(xMatrices))
+
   cat("\n-------------------------\n")
   cat("START MULTIPLE STOMPS")
   cat("\n-------------------------\n")
@@ -140,6 +142,15 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
     heatmap_matrix      <- c(heatmap_matrix, rep(dataset_names[i], length(meth)))
     heatmap_values_rmse <- c(heatmap_values_rmse, stomp_output$RMSE_CM)
     heatmap_values_mape <- c(heatmap_values_mape, stomp_output$MAPE_CM)
+    temp_list <- vector(mode = "list", length = length(meth))
+
+    for(meth_ind in 1:ncol(stomp_output$rmse_raw)){
+      row_ind = which.min(stomp_output$rmse_raw[,meth_ind])
+      model_ind = ((row_ind-1)*ncol(stomp_output$rmse_raw))+meth_ind
+      temp_list[[meth_ind]] <- stomp_output$models[[model_ind]]
+    }
+
+    models[[i]] <- temp_list
 
   }
 
@@ -160,7 +171,8 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
   dev.off()
 
   output <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_mape, heatmap_values_rmse)
+  output_list <- list("heatmap_dataframe" = output, "best_models" = models)
 
-  return(output)
+  return(output_list)
 
 }
