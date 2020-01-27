@@ -1,7 +1,7 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 # StompR
@@ -90,5 +90,69 @@ Most independent continuous factors within a dataset have varying scales. This m
 - `pareto`    Use the Pareto Normalisation Formula
 - `vast`      Use the Variable Stability Scaling Method
 - `level`     Use the Level Normalisation Formula
+
+When specified in `startStompingMultiple`, these transforms will be applied to each dataset individually as they are iterated through.
+[scaling](./images/Scaling.png?raw=true)
+
+### Statistical Methods
+The main aim of this package is to compare statistical model performances versus the same data to find the method with the least amount of cumulative error. There are 11 different statistical methods currently available, these are:
+- Ordinary Least Squares Regression (OLSR)
+- Stepwise Linear Regression - Both directions (SLR)
+- Stepwise Linear Regression - Forwards direction (SLRf)
+- Stepwise Linear Regression - Backwards direction (SLRb)
+- Principal Components Regression (PCR)
+- Partial Least Squares Regression (PLSR)
+- Random Forest Regression (RFR)
+- Support Vector Machine (SVM)
+- K-Nearest Neighbours Regression (KNN)
+- Generalised Boosted Modelling (GBM)
+- Robust Linear Regression (RLR) 
+Instead of typing out the names of these methods, this package use a numerical vector, `meth`, where each number corresponds to a particular method. By default, this package will iterate over all of them. Their numerical values are:
+- 1 OLSR
+- 2 SLR
+- 3 SLRf
+- 4 SLRb
+- 5 PCR
+- 6 PLSR
+- 7 RFR
+- 8 SVM
+- 9 KNN
+- 10 GBM
+- 11 RLR
+[MORE INFORMATION ABOUT EACH METHOD HERE]
+
+### General Parameters
+There are several general parameters in both `startStomping()` and `startStompingMultiple()`, these are:
+- prop
+- seed
+- iter
+`prop` is the parameter which sets the proportion of rows of `xMatrix` to build the model with. For example, `prop = 0.6` will use 60% of `xMatrix` to build the model, and calculate the MAPE and RMSE with the remaining 40% of the dataset; by default, `prop = 0.7`.
+`seed` is used to create reproducable results from one simulation to the next. Mainly it is used to generate the indices for splitting the `xMatrix` into its respective training and testing datasets. 
+`iter` is how many training datasets to generate and test each statistical method with; for example setting `iter = 10` will create 10 training sets, 10 models per statistical method, and 10 different RMSE values. The cumulative average per iteration is then calculated, resulting in a converged RMSE and MAPE value, by which the general performance and accuracy of that statistical method can be assessed.
+
+##Output
+`startStomping()` will return a list consisting of:
+- `RMSE_CM`   The final cumulative mean value of the RMSE per statistical method
+- `MAPE_CM`   The final cumulative mean value of the MAPE per statistical method
+- `rmse_raw`  A matrix of raw RMSE values per model generated, where the row number is the iteration and the column number is the statistical method
+- `mape_raw`  A matrix of raw MAPE values per model generated, where the row number is the iteration and the column number is the statistical method
+- `models`    A list of all the models generated within the simulation for further analysis if desired
+
+Whereas `startStompingMultiple()` will return a list of:
+- `heatmap_dataframe`  A dataframe containing 4 columns:
+  - `heatmap_methods`     The Statistical Methods
+  - `heatmap_matrix`      The Dataset Names
+  - `heatmap_values_mape` The corresponding MAPE value for the statistical method and dataset name at the same index in `heatmap_methods` and `heatmap_matrix`
+  - `heatmap_values_rmse` The corresponding RMSE value for the statistical method and dataset name at the same index in `heatmap_methods` and `heatmap_matrix`
+- `best_models` This is a list of the models with the lowest RMSE of all the iterations for each statistical method for each dataset
+
+
+### Plots
+
+
+### Heatmap 
+If comparing multiple datasets, it makes more sense to visualise the results with a heatmap whick plots the dataset versus the statistical method. Two heatmaps are produced, one for each the RMSE and the MAPE. The colour of the square is dependant on the value of the respective error measurement. The names of each dataset in the list `xMatrices` are used for the x axis.
+
+### Models
 
 
