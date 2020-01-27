@@ -22,11 +22,19 @@ Statistical Comparison Package in R (StompR) is a tool for analysing the perform
   - [Log Transform](#log-transform)
   - [Data Scaling](#data-scaling)
   - [Statistical Methods](#statistical-methods)
+    - [Ordinary Least Squares Regression](#ordinary-least-squares-regression)
+    - [Stepwise Linear Regression](#stepwise-linear-regression)
+    - [Principal Components Regression](#principal-components-regression)
+    - [Partial Least Squares Regression](#partial-least-squares-regression)
+    - [Random Forest Regression](#random-forest-regression)
+    - [Support Vector Machine](#support-vector-machine)
+    - [K-Nearest Neighbours](#k-nearest-neighbours)
+    - [Generalised Boosted Regression](#generalised-boosted-regression)
+    - [Robust Linear Regression](#robust-linear-regression)
   - [General Parameters](#general-parameters)
 - [Output](#output)
   - [Plots](#plots)
   - [Heatmap](#heatmap)
-  - [Models](#models)
   
   
 ## Workflow
@@ -107,6 +115,7 @@ The main aim of this package is to compare statistical model performances versus
 - K-Nearest Neighbours Regression (KNN)
 - Generalised Boosted Modelling (GBM)
 - Robust Linear Regression (RLR) 
+
 Instead of typing out the names of these methods, this package use a numerical vector, `meth`, where each number corresponds to a particular method. By default, this package will iterate over all of them. Their numerical values are:
 - 1 OLSR
 - 2 SLR
@@ -119,13 +128,34 @@ Instead of typing out the names of these methods, this package use a numerical v
 - 9 KNN
 - 10 GBM
 - 11 RLR
+
 [MORE INFORMATION ABOUT EACH METHOD HERE]
+
+#### Ordinary Least Squares Regression
+
+#### Stepwise Linear Regression
+
+#### Principal Components Regression
+
+#### Partial Least Squares Regression
+
+#### Random Forest Regression
+
+#### Support Vector Machine
+
+#### K-Nearest Neighbours
+
+#### Generalised Boosted Regression
+
+#### Robust Linear Regression
+
 
 ### General Parameters
 There are several general parameters in both `startStomping()` and `startStompingMultiple()`, these are:
 - prop
 - seed
 - iter
+
 `prop` is the parameter which sets the proportion of rows of `xMatrix` to build the model with. For example, `prop = 0.6` will use 60% of `xMatrix` to build the model, and calculate the MAPE and RMSE with the remaining 40% of the dataset; by default, `prop = 0.7`.
 `seed` is used to create reproducable results from one simulation to the next. Mainly it is used to generate the indices for splitting the `xMatrix` into its respective training and testing datasets. 
 `iter` is how many training datasets to generate and test each statistical method with; for example setting `iter = 10` will create 10 training sets, 10 models per statistical method, and 10 different RMSE values. The cumulative average per iteration is then calculated, resulting in a converged RMSE and MAPE value, by which the general performance and accuracy of that statistical method can be assessed.
@@ -140,19 +170,19 @@ There are several general parameters in both `startStomping()` and `startStompin
 
 Whereas `startStompingMultiple()` will return a list of:
 - `heatmap_dataframe`  A dataframe containing 4 columns:
-  - `heatmap_methods`     The Statistical Methods
-  - `heatmap_matrix`      The Dataset Names
+  - `heatmap_methods`  The Statistical Methods
+  - `heatmap_matrix`   The Dataset Names
   - `heatmap_values_mape` The corresponding MAPE value for the statistical method and dataset name at the same index in `heatmap_methods` and `heatmap_matrix`
   - `heatmap_values_rmse` The corresponding RMSE value for the statistical method and dataset name at the same index in `heatmap_methods` and `heatmap_matrix`
 - `best_models` This is a list of the models with the lowest RMSE of all the iterations for each statistical method for each dataset
 
 
 ### Plots
-
+Performance plots will be generated for both of the main functions. There will be a line plot per dataset to display:
+- The Final Performance line plots for both the MAPE and RMSE
+- A multiplot of line graphs showing the cumulative mean of both the RMSE and MAPE for each statistical method
+- A multiplot of line graphs showing the raw value of both the RMSE and MAPE over each iteration for each statistical method
 
 ### Heatmap 
-If comparing multiple datasets, it makes more sense to visualise the results with a heatmap whick plots the dataset versus the statistical method. Two heatmaps are produced, one for each the RMSE and the MAPE. The colour of the square is dependant on the value of the respective error measurement. The names of each dataset in the list `xMatrices` are used for the x axis.
-
-### Models
-
+If comparing multiple datasets, it makes more sense to visualise the results with a heatmap which plots the dataset versus the statistical method. Two heatmaps are produced, one for each the RMSE and the MAPE. The colour of the square is dependant on the value of the respective error measurement, where red is poor and green is a good performance. The names of each dataset in the list `xMatrices` are used for the x axis, which if left blank will just be the index of the dataset in the list.
 
