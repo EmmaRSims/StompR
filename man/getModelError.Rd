@@ -17,6 +17,7 @@ Returns:
 \item mape - the Mean Absolute Percentage Error (MAPE) of the current model
 \item rmse - the Root Mean Square Error (RMSE) of the current model
 }
+If they are infinite values, this function changes them to 999 to avoid Inf errors
 }
 \description{
 getModelError is a function that calculates the Root Mean Square Error (RMSE) and Mean Absolute Percentage Error (MAPE) from the Predicted values and corresponding Real values

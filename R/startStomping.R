@@ -148,8 +148,8 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   } else {dataM <- xMatrix}
 
   #Combine data for scaling
-  dataC <- dataM#cbind(dataM, yVector)
-  #dataC <- cbind(dataM, yVector)
+  #dataC <- dataM
+  dataC <- cbind(dataM, yVector)
 
   #Scale Data, so scaley, like a ssssssssnake
   if(transformV == "raw"){           dataS <- dataC;                }
@@ -165,8 +165,8 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   #Seperate Data Again
   dimMat <- dim(dataS)
-  dMat <- as.matrix(dataS)
-  dVec <- yVector
+  dMat <- as.matrix(dataS[,-dimMat[2]])
+  dVec <- as.matrix(dataS[,dimMat[2]])
 
 
   ##-----BUILD MODELS

@@ -58,6 +58,8 @@
 #' \item heatmap_matrix - The heatmap matrix/dataset name order
 #' \item heatmap_values_mape - The heatmap MAPE values in corresponding order to heatmap_methods and heatmap_matrix
 #' \item heatmap_values_rmse - The heatmap RMSE values in corresponding order to heatmap_methods and heatmap_matrix
+#' \item best_rmse_models - The models which performed the best for RMSE over each xMatrix
+#' \item best_mape_models - The models which performed the best for MAPE over each xMatrix
 #' }
 #'
 #'@export
@@ -119,7 +121,8 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
   heatmap_values_rmse <- c()
   heatmap_values_mape <- c()
 
-  models <- vector(mode = "list", length = length(xMatrices))
+  models_rmse <- vector(mode = "list", length = length(xMatrices))
+  models_mape <- vector(mode = "list", length = length(xMatrices))
 
   cat("\n-------------------------\n")
   cat("START MULTIPLE STOMPS")
@@ -144,13 +147,23 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
     heatmap_values_mape <- c(heatmap_values_mape, stomp_output$MAPE_CM)
     temp_list <- vector(mode = "list", length = length(meth))
 
+    #Best Models via RMSE
     for(meth_ind in 1:ncol(stomp_output$rmse_raw)){
       row_ind = which.min(stomp_output$rmse_raw[,meth_ind])
       model_ind = ((row_ind-1)*ncol(stomp_output$rmse_raw))+meth_ind
       temp_list[[meth_ind]] <- stomp_output$models[[model_ind]]
     }
 
-    models[[i]] <- temp_list
+    models_rmse[[i]] <- temp_list
+
+    #Best Models via MAPE
+    for(meth_ind in 1:ncol(stomp_output$mape_raw)){
+      row_ind = which.min(stomp_output$mape_raw[,meth_ind])
+      model_ind = ((row_ind-1)*ncol(stomp_output$mape_raw))+meth_ind
+      temp_list[[meth_ind]] <- stomp_output$models[[model_ind]]
+    }
+
+    models_mape[[i]] <- temp_list
 
   }
 
@@ -171,7 +184,7 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
   dev.off()
 
   output <- data.frame(heatmap_methods, heatmap_matrix, heatmap_values_mape, heatmap_values_rmse)
-  output_list <- list("heatmap_dataframe" = output, "best_models" = models)
+  output_list <- list("heatmap_dataframe" = output, "best_rmse_models" = models_rmse, "best_mape_models" = models_mape)
 
   return(output_list)
 
