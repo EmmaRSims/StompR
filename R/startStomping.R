@@ -36,6 +36,7 @@
 #' @import FNN
 #' @import gbm
 #' @import robustbase
+#' @import corrgram
 #'
 #' @param file_path string String to a folder where the output plots are stored
 #' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
@@ -77,6 +78,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   require(FNN)
   require(gbm)
   require(robustbase)
+  require(corrgram)
 
   #Graphics, you have chosen... poorly.
   if(!is.null(dev.list())){dev.off()}
@@ -167,6 +169,9 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   dimMat <- dim(dataS)
   dMat <- as.matrix(dataS[,-dimMat[2]])
   dVec <- as.matrix(dataS[,dimMat[2]])
+
+  #Scree Plot
+
 
 
   ##-----BUILD MODELS

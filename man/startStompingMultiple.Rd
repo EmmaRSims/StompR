@@ -78,6 +78,8 @@ The performance plots and final heatmap plots are in the file path specified. Al
 \item heatmap_matrix - The heatmap matrix/dataset name order
 \item heatmap_values_mape - The heatmap MAPE values in corresponding order to heatmap_methods and heatmap_matrix
 \item heatmap_values_rmse - The heatmap RMSE values in corresponding order to heatmap_methods and heatmap_matrix
+\item best_rmse_models - The models which performed the best for RMSE over each xMatrix
+\item best_mape_models - The models which performed the best for MAPE over each xMatrix
 }
 }
 \description{
