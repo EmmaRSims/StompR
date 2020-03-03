@@ -51,6 +51,7 @@ StompR was tested on and requires the following:
 ````
     pls (>= 2.7-2)    randomForest (>= 4.6-14)    e1071 (>= 1.7-3)
     FNN (>= 1.1.3)    robustbase (>= 0.93-5)      gbm (>= 2.1.5)
+    ggbiplot (>= 0.55)
 ````
 **Note:** This package also relies on the core `stats` package
 

@@ -14,6 +14,7 @@
 #' startStomping is a function which statistically compares a variety of models on the same datasets
 #' @details
 #' This function returns the error rates of each model vs the data supplied.
+#' Will generate performance plots, and also a biplot, scree plot, correllogram plot, and correlation heatmap plot for analysis of the factors.
 #' There are two measurements of error, the root mean square error (RMSE), and the mean absolute error (MAPE).
 #' The models that this function compares are:
 #' \itemize{
@@ -31,12 +32,15 @@
 #' }
 #'
 #' @importFrom pls plsr pcr
-#' @import randomForest
+#' @import ggbiplot
+#' @importFrom randomForest randomForest
 #' @import e1071
 #' @import FNN
 #' @import gbm
 #' @import robustbase
 #' @import corrgram
+#' @import reshape2
+#' @import ggplot2
 #'
 #' @param file_path string String to a folder where the output plots are stored
 #' @param xMatrix A matrix where each column is considered a factor to be modelled. Names of columns will automatically be used if provided.
@@ -79,6 +83,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   require(gbm)
   require(robustbase)
   require(corrgram)
+  require(ggbiplot)
 
   #Graphics, you have chosen... poorly.
   if(!is.null(dev.list())){dev.off()}
@@ -103,6 +108,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if(missing(gbm_node)){gbm_node = 1}
   if(missing(rlr_mscale)){rlr_mscale = 500}
   if(missing(iter)){iter = 10}
+  if(missing(factor_analysis)){factor_analysis = F}
   if(missing(permission)){permission == F}
 
   #Got to test for incorrect inputs, don't want to be sneaking any hobbitses into Mordor
@@ -114,7 +120,7 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if((min(meth) < 1)||(max(meth)>11)){stop("Methods vector values out of bounds")}
   if((rfr_ntree < 1) || ((class(rfr_ntree) != "numeric") && (class(rfr_ntree) != "integer"))){stop("rfr_ntree must be a positive integer")}
   if(missing(knn_knum)){knn_knum = 1:(ceiling(length(yVector)*0.5))}
-
+  if(class(factor_analysis) != "logical" || class(permission) != "logical" || class(logV) != "logical"){stop("One of the following variables are not a logical class type: logV, factor_analysis, permission")}
 
   ##--------------------------------------------------------------------------------------------------------------------------------------
   cat("\n---------------------")
@@ -170,8 +176,12 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   dMat <- as.matrix(dataS[,-dimMat[2]])
   dVec <- as.matrix(dataS[,dimMat[2]])
 
-  #Scree Plot
-
+  #Factor Analysis
+  if(transformV == "center"){
+    dMat <- extractFactors(file_path = file_path, xMatrix = dMat, title = "", center_ = F, scale_ = F)
+  } else {
+    dMat <- extractFactors(file_path = file_path, xMatrix = dMat, title = "", center_ = T, scale_ = F)
+  }
 
 
   ##-----BUILD MODELS
@@ -266,12 +276,12 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   rmse_final <- rmse_cum_mean[iter,]
   mape_final <- mape_cum_mean[iter,]
 
-  png(paste0(plot_path,"/Final_Comparison_rmse.png"))
+  png(paste0(plot_path,"/Final_Comparison_rmse.png"), width = 800, height = 800)
   plot(y=rmse_final,x=1:length(meth), xaxt='n', xlab="", ylab="Mean RMSE", title=expression(paste("Statistical Method Comparison\n",mu," RMSE")))
   axis(1,at=1:length(meth),labels=method_names[meth],las=2)
   dev.off()
 
-  png(paste0(plot_path,"/Final_Comparison_mape.png"))
+  png(paste0(plot_path,"/Final_Comparison_mape.png"), width = 800, height = 800)
   plot(y=mape_final,x=1:length(meth), xaxt='n', xlab="", ylab="Mean MAPE (%)", title=expression(paste("Statistical Method Comparison\n",mu," MAPE (%)")))
   axis(1,at=1:length(meth),labels=method_names[meth],las=2)
   dev.off()

@@ -10,7 +10,7 @@
 #
 
 plotDataPNG <- function(file_path, mat, N, yLab, yMax, meth_names, title){
-  png(file_path)
+  png(file_path, width = 1000, height = 1000)
   par(mfrow = c(N,3))
 
   for(i in 1:length(meth_names)){
