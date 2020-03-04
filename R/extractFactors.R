@@ -16,9 +16,9 @@ extractFactors <- function(file_path, xMatrix, title, group, center_, scale_){
   if(missing(center_)){center_ = T}
   if(missing(scale_)){scale_ = T}
   if(missing(group)){group = rep("0",length(xMatrix[,1]))}
-  if(missing(percent_variance)){percent_variance = 5}
-  if(missing(just_plots)){just_plots = F}
   if(missing(title)){title = ""}
+  if(missing(file_path)){stop("File Path is missing")}
+  if(missing(xMatrix)){stop("xMatrix is missing")}
 
   require(corrgram)
   require(reshape2)

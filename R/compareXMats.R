@@ -130,6 +130,8 @@ startStompingMultiple <- function(file_path, xMatrices, yVector, logV, transform
   cat("START MULTIPLE STOMPS")
   cat("\n-------------------------\n")
 
+  cat(paste("\nSeed: ", seed, "\n"))
+
 
   for(i in 1:length(xMatrices)){
 

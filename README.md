@@ -54,6 +54,7 @@ StompR was tested on and requires the following:
     ggbiplot (>= 0.55)
 ````
 **Note:** This package also relies on the core `stats` package
+          `ggbiplot` can be installed using devtools as it is not in the CRAN repository
 
 ### Installing from Devtools
 One of the easiest ways to install packages from GitHub is through another package, `devtools`.
@@ -101,7 +102,7 @@ Most independent continuous factors within a dataset have varying scales. This m
 - `level`     Use the Level Normalisation Formula
 
 When specified in `startStompingMultiple`, these transforms will be applied to each dataset individually as they are iterated through.
-[scaling](./images/Scaling.png?raw=true)
+[scaleFormulas](./images/scaleFormulas.png?raw=true)
 
 ### Statistical Methods
 The main aim of this package is to compare statistical model performances versus the same data to find the method with the least amount of cumulative error. There are 11 different statistical methods currently available, these are:
@@ -118,21 +119,20 @@ The main aim of this package is to compare statistical model performances versus
 - Robust Linear Regression (RLR) 
 
 Instead of typing out the names of these methods, this package use a numerical vector, `meth`, where each number corresponds to a particular method. By default, this package will iterate over all of them. Their numerical values are:
-- 1 OLSR
-- 2 SLR
-- 3 SLRf
-- 4 SLRb
-- 5 PCR
-- 6 PLSR
-- 7 RFR
-- 8 SVM
-- 9 KNN
+- 1  OLSR
+- 2  SLR
+- 3  SLRf
+- 4  SLRb
+- 5  PCR
+- 6  PLSR
+- 7  RFR
+- 8  SVM
+- 9  KNN
 - 10 GBM
 - 11 RLR
 
-[MORE INFORMATION ABOUT EACH METHOD HERE]
-
 #### Ordinary Least Squares Regression
+This regression fits a simple line of best fit by looking at the total distance
 
 #### Stepwise Linear Regression
 

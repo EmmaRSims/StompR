@@ -108,7 +108,6 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if(missing(gbm_node)){gbm_node = 1}
   if(missing(rlr_mscale)){rlr_mscale = 500}
   if(missing(iter)){iter = 10}
-  if(missing(factor_analysis)){factor_analysis = F}
   if(missing(permission)){permission == F}
 
   #Got to test for incorrect inputs, don't want to be sneaking any hobbitses into Mordor
@@ -120,7 +119,6 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
   if((min(meth) < 1)||(max(meth)>11)){stop("Methods vector values out of bounds")}
   if((rfr_ntree < 1) || ((class(rfr_ntree) != "numeric") && (class(rfr_ntree) != "integer"))){stop("rfr_ntree must be a positive integer")}
   if(missing(knn_knum)){knn_knum = 1:(ceiling(length(yVector)*0.5))}
-  if(class(factor_analysis) != "logical" || class(permission) != "logical" || class(logV) != "logical"){stop("One of the following variables are not a logical class type: logV, factor_analysis, permission")}
 
   ##--------------------------------------------------------------------------------------------------------------------------------------
   cat("\n---------------------")
