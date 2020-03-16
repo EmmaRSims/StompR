@@ -102,7 +102,7 @@ Most independent continuous factors within a dataset have varying scales. This m
 - `level`     Use the Level Normalisation Formula
 
 When specified in `startStompingMultiple`, these transforms will be applied to each dataset individually as they are iterated through.
-[scaleFormulas](./images/scaleFormulas.png?raw=true)
+![scaleFormulas](./images/scaleFormulas.png?raw=true)
 
 ### Statistical Methods
 The main aim of this package is to compare statistical model performances versus the same data to find the method with the least amount of cumulative error. There are 11 different statistical methods currently available, these are:
