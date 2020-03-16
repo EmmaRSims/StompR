@@ -132,15 +132,19 @@ Instead of typing out the names of these methods, this package use a numerical v
 - 11 RLR
 
 #### Ordinary Least Squares Regression
-This regression fits a simple line of best fit by looking at the total distance
+This regression fits a line of best fit which reduces the total sum of errors, which is the total distance between the sample points and the line itself.
 
 #### Stepwise Linear Regression
+Is a selection method which starts with all the available predictors, and reduces the number of factors until an optimal model is achieved. These are usually built using a series of F-Tests to determine whether a factor should be kept or not. Forward direction stepwise regression involves adding factors to a blank model until it is at an optimal size, backwards stepwise regression involves starting with all factors and removing them until it is at an optimal performance, whereas both directions will do both adding and removing factors in an attempt to find the best combination.
 
 #### Principal Components Regression
+Principal components regression involves finding the covariance matrix and therefore the eigenvectors between factors to model the unobserved influences. This is also a good data dimension reduction technique. Using the value at the "elbow" of the scree plot will give a good idea about how many latent variables to include in the model, which is also the `plsr_ncomp` input variable.
 
 #### Partial Least Squares Regression
+This method looks at reducing the dimension of data via the covariance matrix, and then fits an ordinary least squares regression to these components.
 
 #### Random Forest Regression
+
 
 #### Support Vector Machine
 
