@@ -2,20 +2,29 @@
 % Please edit documentation in R/extractFactors.R
 \name{extractFactors}
 \alias{extractFactors}
-\title{extractFactors creates a correlogram of the xMatrix data, and a scree plot, then returns the factors with the highest eigenvalues}
+\title{extractFactors creates a correlogram of the xMatrix data, correlation heatmap, biplot, and a scree plot}
 \usage{
-extractFactors(file_path, xMatrix, group, title, cent, sca)
+extractFactors(file_path, xMatrix, title, group, center_, scale_)
 }
 \arguments{
 \item{file_path}{file path to the folder where the images are stored}
 
-\item{xMatrix}{matrix of data}
+\item{xMatrix}{matrix of data where each column is a factor}
 
 \item{title}{name of the matrix to append to title}
+
+\item{group}{a vector containing the categorical groups for the PCA analysis - if not supplied, they are assigned to the same group}
+
+\item{center_}{Boolean value which changes whether the xMatrix is centered during the PCA analysis; set to TRUE by default}
+
+\item{scale_}{Boolean value that determines whether the xMatrix is scaled during the PCA analysis; set to TRUE by default}
+}
+\value{
+xMatrix as the original dataset
 }
 \description{
-extractFactors creates a correlogram of the xMatrix data, and a scree plot, then returns the factors with the highest eigenvalues
+extractFactors creates a correlogram of the xMatrix data, correlation heatmap, biplot, and a scree plot
 }
 \details{
-Takes a matrix of data for which each column is a continous factor and extracts the factors for which the eigenvalues are higher than 1. Also generates a scree plot and a correlogram.
+Takes a matrix of data for which each column is a continous factor and generates a scree plot, PCA biplot, correlation heatmap, and a correlogram.
 }

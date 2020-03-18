@@ -20,4 +20,4 @@ Depends: R (>= 3.6.1), pls (>= 2.7-2), randomForest (>= 4.6-14), e1071 (>= 1.7-3
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
