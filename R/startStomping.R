@@ -176,9 +176,9 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
   #Factor Analysis
   if(transformV == "center"){
-    dMat <- extractFactors(file_path = file_path, xMatrix = dMat, title = "", center_ = F, scale_ = F)
+    res <- extractFactors(file_path = file_path, xMatrix = dMat, yVector = dVec, title = "", center_ = F, scale_ = F)
   } else {
-    dMat <- extractFactors(file_path = file_path, xMatrix = dMat, title = "", center_ = T, scale_ = F)
+    res <- extractFactors(file_path = file_path, xMatrix = dMat, yVector = dVec, title = "", center_ = T, scale_ = F)
   }
 
 
@@ -199,8 +199,6 @@ startStomping  <- function(file_path, xMatrix, yVector, logV, transformV, meth, 
 
     train_ <- DATA$train
     test_ <- DATA$test
-
-
 
     #Time to unleash the Meths
     for(j in 1:length(meth)){
